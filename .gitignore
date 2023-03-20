@@ -1,2 +1,4 @@
 ./xml_normalized
 ./xml_validated
+./xml_normalized/*
+./xml_validated/*
