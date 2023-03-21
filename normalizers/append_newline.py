@@ -2,4 +2,4 @@
 import sys
 
 # Take an input file from stdin and print it back to stdout
-print(sys.argv[1] + "\n\n\n")
+print("\n\n\n" + sys.argv[1] + "\n\n\n")
