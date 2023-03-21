@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: This currently only works with python program, need some general approach for others.
+
 xml_samples="xml_samples" # Directory with xml files to test.
 
 normalizers="normalizers" # Directory of programs to run the sample xml files through.
@@ -14,63 +16,77 @@ rm -r "$xml_validated" 2> /dev/null
 mkdir "$xml_normalized"
 mkdir "$xml_validated"
 
-# Run all normalizers in `$normalizers` on the file passed as argument `$1`.
+# Get the name of a file, removing the leading path and trailing file extension
+extract_name() {
+    echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"
+}
+
+# Run all normalizers in `$normalizers` on the file passed in as argument `$1`.
+# The results are stored in a directory named by the xml file, with files named by the normalizer.
 run_normalizers() {
-    # Grab the name of the file given by the input path
-    xml_name=`echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"`
+    # Grab the name of the file given by the input path, and create a directory for the outputs.
+    xml_name=`extract_name "$1"`
     mkdir "./$xml_normalized/$xml_name"
+
     normalizer_program=""
     for normalizer_program in ./$normalizers/*; do
-        # Store the result of normalizing `$xml_file` with `$normalizer_program` in `$new_xml`
+        # Get the result of normalizing the input file with the current normalizer.
         echo "Normalizing '$1' with '$normalizer_program'"
-        # TODO: sub in a real command here
-        new_xml=`python3 "$normalizer_program" "$(<$1)"`
+        normalized_xml=`python3 "$normalizer_program" "$(<$1)"`
 
-        # Grab the specific name of the file being normalized and normalizer being used
-        normalizer_name=`echo "$normalizer_program" | sed -r "s/.*\/(.*)\..*/\1/"`
-
-        # Write the normalized text from `new_xml` to a new file in `$xml_normalized`
-        out_regex="s/(.*)\/$xml_samples\/(.*)/\1\/$xml_normalized\/$normalizer_name\_\2/"
-        normalized_file=`echo "$1" | sed -r "$out_regex"`
+        # Write the normalized text to a new file in `$xml_normalized`
+        normalizer_name=`extract_name "$normalizer_program"`
+        normalized_file="./$xml_normalized/$xml_name/$normalizer_name.xml"
         echo "Outputting normalized file to: '$normalized_file'"
-        echo "$new_xml" > "$normalized_file"
+        echo "$normalized_xml" > "$normalized_file"
         echo ""
     done
 }
 
-# Run all validators in `$validators` on the two files passed as arguments `$1` and `$2`
+# Run all validators in `$validators` on the two files passed as arguments `$2` and `$3`.
+# The result files are named by the validator, xml file (from `$1`), and two normalizers.
 run_validators() {
     validator_program=""
     for validator_program in ./$validators/*; do
-        # Store the result of validating the viles with `$validator_program` in `$is_valid`
-        echo "Validating $1 and $2 with $validator_program"
-        # TODO: sub in a real command here
-        is_valid=`python3 "$validator_program" "$(<$1)" "$(<$2)"`
+        # Store the result of validating the files with `$validator_program` in `$is_valid`.
+        echo "Validating $2 and $3 with $validator_program"
+        is_valid=`python3 "$validator_program" "$(<$2)" "$(<$3)"`
 
-        # Grab the specific name of the validator being used
-        validator_name=`echo "$validator_program" | sed -r "s/.*\/(.*)\..*/\1/"`
+        # Grab the specific name of the validator being used and corresponding normalizers.
+        validator_name=`extract_name "$validator_program"`
+        normalizer_name1=`extract_name "$2"`
+        normalizer_name2=`extract_name "$3"`
 
-        # Write the output of validation to a new file in `$xml_validated`
-        out_regex="s/(.*)\/$xml_normalized\/(.*)\.xml/\1\/$xml_validated\/$validator_name\_\2.txt/"
-        validated_file=`echo "$1" | sed -r "$out_regex"`
+        # Write the output of validation to a new file in `$xml_validated`.
+        validated_file="./$xml_validated/$validator_name-$1-$normalizer_name1-$normalizer_name2"
         echo "Outputting validation results to: '$validated_file'"
         echo "$is_valid" > "$validated_file"
         echo ""
     done
 }
 
+# Run validation on all pairs of files in the directory given as a path in argument `$1`.
+# Note that we both validate files against themselves and in both possible orders.
+validate_files() {
+    # Extract just the name of the directory of normalized files.
+    directory_name=`echo "$1" | sed -r "s/.*\/(.*)/\1/"`
+    normalized_file1="" # Normalized file to validate.
+    normalized_file2="" # Normalized file to validate against.
+    for normalized_file1 in $1/*.xml; do
+        for normalized_file2 in $1/*.xml; do
+            run_validators "$directory_name" "$normalized_file1" "$normalized_file2"
+        done
+    done
+}
+
 # Loop through all the sample xml files and run the normalizers on them.
-xml_file="" # Global variable to store the current file to normalize
+xml_file=""
 for xml_file in ./$xml_samples/*.xml; do
     run_normalizers "$xml_file"
 done
 
 # Loop through all pairs of normalized files and run the validators on them.
-# TODO: This currently will validate all files against all other files.
-normalized_file1="" # Normalized file to validate.
-normalized_file2="" # Normalized file to validate against.
-for normalized_file1 in ./$xml_normalized/*.xml; do
-    for normalized_file2 in ./$xml_normalized/*.xml; do
-        run_validators "$normalized_file1" "$normalized_file2"
-    done
+normalized_xml_directory=""
+for normalized_xml_directory in ./$xml_normalized/*; do
+    validate_files "$normalized_xml_directory"
 done
