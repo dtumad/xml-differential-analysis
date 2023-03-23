@@ -66,7 +66,7 @@ run_validators() {
         echo "$is_valid" > "$validated_file"
 
         validated_csv="./$xml_validated.csv"
-        echo "$validator_name,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validation_results"
+        echo "$1.xml,$validator_name,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validation_results"
     done
 }
 
