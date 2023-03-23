@@ -9,12 +9,15 @@ xml_normalized="xml_normalized" # Directory to output normalized xml files.
 
 validators="validators" # Directory of programs to test if two normalized files match.
 xml_validated="xml_validated" # Directory to output results of validation.
+validation_results="validation_results.csv" # CSV to collect validation results
 
 # Clear previous results of running normalizers and validators.
 rm -r "$xml_normalized" 2> /dev/null
 rm -r "$xml_validated" 2> /dev/null
+rm "$validation_results" 2> /dev/null
 mkdir "$xml_normalized"
 mkdir "$xml_validated"
+touch "$validation_results"
 
 # Get the name of a file, removing the leading path and trailing file extension
 extract_name() {
@@ -61,6 +64,9 @@ run_validators() {
         validated_file="./$xml_validated/$1/$validator_name-$normalizer_name1-$normalizer_name2"
         echo "Outputting validation results to: '$validated_file'"
         echo "$is_valid" > "$validated_file"
+
+        validated_csv="./$xml_validated.csv"
+        echo "$validator_name,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validation_results"
     done
 }
 
