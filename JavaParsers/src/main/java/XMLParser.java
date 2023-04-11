@@ -4,18 +4,33 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Scanner;
 
 public class XMLParser {
 
     public static String filePath = "laptops.xml";
 
+    public static void main(String[] args) {
 
-    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Pick Your Parser Type:");
+        System.out.println("Enter 1 for Dom Parser");
+        System.out.println("Enter 2 for Sax Parser");
+        System.out.println("Enter 3 for Stax Parser");
+        System.out.println("Insert you Response:");
+
+        int userInput = sc.nextInt();
 
         //Select with one to execute
-        //saxParserExecute();
-
-        domParserExecute();
+        if (userInput == 1) {
+            domParserExecute();
+        } else if (userInput == 2) {
+            saxParserExecute();
+        } else if (userInput == 3) {
+            StaxParserExecute();
+        } else {
+            System.out.println("Error");
+        }
 
 
     }
@@ -33,6 +48,11 @@ public class XMLParser {
     public static void domParserExecute() {
         DomParser domParser = new DomParser(filePath);
         System.out.println(domParser);
+    }
+
+    public static void StaxParserExecute() {
+        StaxParser staxParser = new StaxParser(filePath);
+        System.out.println(staxParser);
     }
 
 }
