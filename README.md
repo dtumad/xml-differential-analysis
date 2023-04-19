@@ -125,3 +125,7 @@ Supported languages are (TODO: need more of these to actually function properly,
 * Better support for compiled programming languages.
 * Parsers from more libraries and more languages.
 * Better aggregation of errors to analyze them more easily.
+
+# Other Notes
+
+* XML samples don't play well with the script if there are spaces in file names. Running `for f in xml_samples/*\ *; do mv "$f" "${f// /_}"; done` will remove them.

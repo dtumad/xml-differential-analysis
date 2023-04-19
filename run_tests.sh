@@ -63,8 +63,10 @@ run_validators() {
         # Write the output of validation to a new file in `$xml_validated`.
         validated_file="./$xml_validated/$1/$validator_name-$normalizer_name1-$normalizer_name2"
         echo "Outputting validation results to: '$validated_file'"
+        echo ""
         echo "$is_valid" > "$validated_file"
 
+        # Write the output of validation as an entry in the aggregated csv file.
         validated_csv="./$validation_results/$validator_name.csv"
         echo "$1.xml,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validated_csv"
     done
@@ -80,8 +82,8 @@ validate_files() {
 
     # Create folder for the validation results on this set of files
     mkdir "./$xml_validated/$directory_name"
-
     echo "Running validators on normalized files in '$1'"
+    echo ""
     for normalized_file1 in $1/*.xml; do
         for normalized_file2 in $1/*.xml; do
             run_validators "$directory_name" "$normalized_file1" "$normalized_file2"
