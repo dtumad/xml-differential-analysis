@@ -72,6 +72,14 @@ run_validators() {
     done
 }
 
+add_csv_headers() {
+    for validator_program in ./$validators/*; do
+        validator_name=`extract_name "$validator_program"`
+        validated_csv="./$validation_results/$validator_name.csv"
+        echo "Original XML Sample,First Parser,Second Parser,Validation Results" > "$validated_csv"
+    done
+}
+
 # Run validation on all pairs of files in the directory given as a path in argument `$1`.
 # Note that we both validate files against themselves and in both possible orders.
 validate_files() {
@@ -80,8 +88,9 @@ validate_files() {
     normalized_file1="" # Normalized file to validate.
     normalized_file2="" # Normalized file to validate against.
 
-    # Create folder for the validation results on this set of files
+    # Create folder for the validation results on this set of files, and add csv headers
     mkdir "./$xml_validated/$directory_name"
+
     echo "Running validators on normalized files in '$1'"
     echo ""
     for normalized_file1 in $1/*.xml; do
@@ -100,6 +109,7 @@ done
 
 # Loop through all pairs of normalized files and run the validators on them.
 normalized_xml_directory=""
+add_csv_headers
 for normalized_xml_directory in ./$xml_normalized/*; do
     validate_files "$normalized_xml_directory"
 done
