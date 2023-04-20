@@ -1,7 +1,5 @@
 # Parse an XML file and write it back out write away
-import sys
 import xml.etree.ElementTree as ET
-
 xml_text : str = input() #sys.argv[1]
 
 try:

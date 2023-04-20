@@ -39,7 +39,7 @@ If they aren't, then something must have gone wrong in either reading or writing
 
 In order to integrate well with the bash scripting, there are essentially just three requirement:
 * The program is a single file (although it should import libraries to do the parsing).
-* The program accepts the XML input string as a command line argument (`sys.argv[1]` in python for example).
+* The program accepts the XML input string from stdin (`input` in python for example).
 * The program writes a final XML string to stdout (`print` in python for example).
 
 In pseudo-code, this should usually look something like:
@@ -48,7 +48,7 @@ In pseudo-code, this should usually look something like:
 import parser_library
 
 -- read the input XML string from command line argument
-original_xml = get_argv(1)
+original_xml = input()
 
 parsed_xml = parser_library.parse(original_xml)
 normalized_xml = parser_library.to_string(parsed_xml)
@@ -66,7 +66,7 @@ The return value can be anything, and will be recorded in the final result aggre
 
 In order to integrate well with the bash scripting, there are essentially just three requirement:
 * The program is a single file (although it should import libraries to do the parsing).
-* The program accepts the two XML input strings as a pair of command line arguments (`sys.argv[1]` and `sys.argv[2]` in python for example).
+* The program accepts the two XML input strings as a pair of lines in stdin (calling `input` twice in python for example).
 * The program writes a final classification to stdout (`print` in python for example).
 
 In pseudo-code, this should usually look something like:
@@ -75,8 +75,8 @@ In pseudo-code, this should usually look something like:
 import parser_library
 
 -- read the input XML strings from command line argument
-xml_sample1 = get_argv(1)
-xml_sample2 = get_argv(2)
+xml_sample1 = input()
+xml_sample2 = input()
 
 parsed_xml1 = parser_library.parse(xml_sample1)
 parsed_xml2 = parser_library.parse(xml_sample2)
