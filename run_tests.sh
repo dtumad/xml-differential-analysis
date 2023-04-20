@@ -35,7 +35,8 @@ run_normalizers() {
     for normalizer_program in ./$normalizers/*; do
         # Get the result of normalizing the input file with the current normalizer.
         echo "Normalizing '$1' with '$normalizer_program'"
-        normalized_xml=`python3 "$normalizer_program" "$(<$1)"`
+        xml_text=`cat "$1" | tr "\n" " "`
+        normalized_xml=`echo "$xml_text" | python3 "$normalizer_program"`
 
         # Write the normalized text to a new file in `$xml_normalized`
         normalizer_name=`extract_name "$normalizer_program"`
@@ -53,7 +54,11 @@ run_validators() {
     for validator_program in ./$validators/*; do
         # Store the result of validating the files with `$validator_program` in `$is_valid`.
         echo "Validating $2 and $3 with $validator_program"
-        is_valid=`python3 "$validator_program" "$(<$2)" "$(<$3)"`
+        xml_text1=`cat "$2" | tr "\n" " "`
+        xml_text2=`cat "$3" | tr "\n" " "`
+        combined_text="$xml_text1
+$xml_text2"
+        is_valid=`echo "$combined_text" | python3 "$validator_program"`
 
         # Grab the specific name of the validator being used and corresponding normalizers.
         validator_name=`extract_name "$validator_program"`
