@@ -8,7 +8,6 @@ xml_text2 = input() #sys.argv[2]
 def validate_tree(xml_tree1, xml_tree2):
     tag1 = xml_tree1.tag
     tag2 = xml_tree2.tag
-    print("Check {} and {}".format(tag1, tag2))
     children1 = [c for c in xml_tree1]
     children2 = [c for c in xml_tree2]
     # Check that both nodes have the same tag and number of child nodes

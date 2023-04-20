@@ -24,6 +24,19 @@ extract_name() {
     echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"
 }
 
+# Get the command to run given the extension
+get_command() {
+    extension=`echo "$1" | sed -r "s/.*\/.*\.(.*)/\1/"`
+    if [[ $extension == "py" ]]
+    then
+        echo "python3"
+    elif [[ $extension == "js" ]]
+    then
+        echo "node"
+    fi
+    # echo "python3"
+}
+
 # Run all normalizers in `$normalizers` on the file passed in as argument `$1`.
 # The results are stored in a directory named by the xml file, with files named by the normalizer.
 run_normalizers() {
@@ -36,7 +49,8 @@ run_normalizers() {
         # Get the result of normalizing the input file with the current normalizer.
         echo "Normalizing '$1' with '$normalizer_program'"
         xml_text=`cat "$1" | tr "\n" " "`
-        normalized_xml=`echo "$xml_text" | python3 "$normalizer_program"`
+        normalizer_command=`get_command $normalizer_program`
+        normalized_xml=`echo "$xml_text" | $normalizer_command "$normalizer_program"`
 
         # Write the normalized text to a new file in `$xml_normalized`
         normalizer_name=`extract_name "$normalizer_program"`
