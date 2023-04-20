@@ -117,6 +117,7 @@ As the script goes through to run different parsing programs, it automatically c
 Based on this it runs a hard coded command based on how that language works.
 Supported languages are (TODO: need more of these to actually function properly, just python rn):
 * Python (calls `python3` command)
+* Javascript (calls the `node` command)
 
 # Future Work
 
