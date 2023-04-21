@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+  <book>
+    <title><![CDATA[Harry Potter and the Philosopher's Stone]]></title>
+    <author><![CDATA[J.K. Rowling]]></author>
+    <publisher><![CDATA[Bloomsbury Publishing]]></publisher>
+    <year>1997</year>
+    <price>$15.99</price>
+    <description>A young boy discovers he is a wizard and enrolls in a school of magic where he uncovers a dark secret about his past.</description>
+    <reviews>
+      <review>★★★★☆ - "I loved this book! It's a classic and a must-read for any fan of fantasy."</review>
+      <review>★★★☆☆ - "I enjoyed the story but found the writing a bit simplistic."</review>
+      <review>★★★★★ - "A timeless masterpiece. J.K. Rowling is a genius."</review>
+    </reviews>
+    <characters>
+      <character><![CDATA[Harry Potter]]></character>
+      <character><![CDATA[Hermione Granger]]></character>
+      <character><![CDATA[Ron Weasley]]></character>
+      <character><![CDATA[Albus Dumbledore]]></character>
+      <character><![CDATA[Severus Snape]]></character>
+      <character><![CDATA[فارسی (Persian)]]></character>
+      <character><![CDATA[русский (Russian)]]></character>
+    </characters>
+  </book>
+  <book>
+    <title><![CDATA[The Hitchhiker's Guide to the Galaxy]]></title>
+    <author><![CDATA[Douglas Adams]]></author>
+    <publisher><![CDATA[Pan Books]]></publisher>
+    <year>1979</year>
+    <price>£7.99</price>
+    <description>An ordinary man is whisked away on a wild adventure through space and time with the help of a travel guide and a depressed robot.</description>
+    <reviews>
+      <review>★★★★★ - "A hilarious and thought-provoking journey through the universe. Douglas Adams was a master of satire."</review>
+      <review>★★☆☆☆ - "I found the humor to be hit or miss, and the plot was a bit too zany for my taste."</review>
+      <review>★★★★☆ - "A unique and entertaining read that keeps you guessing until the end."</review>
+    </reviews>
+    <characters>
+      <character><![CDATA[Arthur Dent]]></character>
+      <character><![CDATA[Ford Prefect]]></character>
+      <character><![CDATA[Zaphod Beeblebrox]]></character>
+      <character><![CDATA[Marvin the Paranoid Android]]></character>
+      <character><![CDATA[ελληνικά (Greek)]]></character>
+      <character><![CDATA[日本語 (Japanese)]]></character>
+    </characters>
+  </book>
+</bookstore>

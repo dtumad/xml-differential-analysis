@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+  <item>
+    <name>🍔 Big Burger</name>
+    <description>A delicious burger with 🧀 cheese, 🥓 bacon, 🍅 tomato, 🥬 lettuce, and 🍔 special sauce.</description>
+    <price>$10.99</price>
+    <allergens>
+      <allergen>Milk 🥛</allergen>
+      <allergen>Egg 🥚</allergen>
+      <allergen>Wheat 🌾</allergen>
+      <allergen>Soy 🌱</allergen>
+      <allergen>ગુજરાતી (Gujarati) 🌶️</allergen>
+      <allergen>ਪੰਜਾਬੀ (Punjabi) 🥔</allergen>
+    </allergens>
+  </item>
+  <item>
+    <name>🍣 Sushi Platter</name>
+    <description>A selection of 🍣 sushi with 🦀 crab, 🍤 shrimp, 🐟 tuna, 🥑 avocado, and 🍚 rice.</description>
+    <price>¥1500</price>
+    <allergens>
+      <allergen>Crustacean 🦐</allergen>
+      <allergen>Fish 🐠</allergen>
+      <allergen>Soy 🌱</allergen>
+      <allergen>한글 (Korean) 🌶️</allergen>
+      <allergen>ไทย (Thai) 🍠</allergen>
+    </allergens>
+  </item>
+  <item>
+    <name>🍺 Craft Beer Flight</name>
+    <description>A flight of four different 🍺 craft beers, each with its own unique flavor and aroma.</description>
+    <price>€15.99</price>
+    <allergens>
+      <allergen>Barley 🌾</allergen>
+      <allergen>Hops 🌿</allergen>
+      <allergen>Yeast 🍄</allergen>
+      <allergen>ਪੰਜਾਬੀ (Punjabi) 🌶️</allergen>
+      <allergen>हिन्दी (Hindi) 🍠</allergen>
+    </allergens>
+  </item>
+</menu>
