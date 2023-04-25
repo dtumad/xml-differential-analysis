@@ -40,7 +40,7 @@ get_command() {
 # Run all normalizers in `$normalizers` on the file passed in as argument `$1`.
 # The results are stored in a directory named by the xml file, with files named by the normalizer.
 run_normalizers() {
-    # Grab the name of the file given by the input path, and create a directory for the outputs.
+    # Grab the name of the file given by the input path, create output directory.
     xml_name=`extract_name "$1"`
     mkdir "./$xml_normalized/$xml_name"
 
