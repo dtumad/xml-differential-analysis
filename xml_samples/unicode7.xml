@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <person>
+    <name>&#x1F468;&#x200D;&#x1F4BB; 🤓</name>
+    <age>42</age>
+    <gender>&#x1F468;&#x200D;&#x1F3A4; 🎤</gender>
+    <nationality>&#x1F1F3;&#x1F1E8; 🇳🇨</nationality>
+    <contact>
+      <email>john.doe&#x40;example.com</email>
+      <phone>+1-555-555-1234</phone>
+      <address>&#x1F3E0; 1234 Main St, 🌇</address>
+    </contact>
+    <interests>
+      <interest>&#x1F98B; 🦋</interest>
+      <interest>&#x1F9E9; 🧩</interest>
+      <interest>&#x1F331; 🌱</interest>
+      <interest>世界&#x1F30D; 🌍</interest>
+      <interest>&#x1F4D5; 📕</interest>
+    </interests>
+    <membership>
+      <type>Gold &#x1F947;🥇</type>
+      <status>Active &#x1F7E2;🟢</status>
+      <since>2022-03-15</since>
+      <expiry>2023-03-15</expiry>
+    </membership>
+  </person>
+  <product>
+    <name>&#x1F680; 🚀</name>
+    <code>ABCD-1234</code>
+    <price>&#x1F4B8; $99.99</price>
+    <description>&#x1F914; This product is a cutting-edge innovation that combines advanced technology with exquisite design. It's perfect for those who crave for unique and extraordinary experiences. Get ready to embark on an unforgettable journey with our futuristic product! 🛸</description>
+    <features>
+      <feature>&#x1F50D; Advanced AI technology</feature>
+      <feature>&#x1F680; Hyper-speed travel capability</feature>
+      <feature>&#x1F6E0; State-of-the-art safety features</feature>
+      <feature>&#x1F9D9;&#x200D;&#x1F680; Futuristic design</feature>
+      <feature>&#x1F4E1; Interactive holographic interface</feature>
+    </features>
+    <availability>&#x1F4C5; In stock</availability>
+    <rating>&#x1F31F; 4.9/5</rating>
+  </product>
+</root>

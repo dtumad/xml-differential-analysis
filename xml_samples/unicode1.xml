@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+  <book>
+    <title>The Gödelian Puzzle Book: Puzzles, Paradoxes and Proofs</title>
+    <author>Raymond M. Smullyan</author>
+    <publisher>Oxford University Press</publisher>
+    <year>2013</year>
+    <isbn>978-0192801425</isbn>
+    <description>A collection of puzzles and problems inspired by the work of logician Kurt Gödel, with solutions and explanations.</description>
+  </book>
+  <book>
+    <title>அகராதி (Agaraathi)</title>
+    <author>Madhan</author>
+    <publisher>Kizhakku Pathippagam</publisher>
+    <year>2012</year>
+    <isbn>978-8183683142</isbn>
+    <description>தமிழ் அகராதியில் உள்ள வார்த்தைகளுக்கு பொருள் விவரங்கள் உள்ள ஒரு சொல்லி அகராதி</description>
+  </book>
+</library>

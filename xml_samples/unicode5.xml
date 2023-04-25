@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <header>
+    <title>¡Hola mundo! &amp; こんにちは世界！</title>
+    <author>Dr. Jürgen Müller</author>
+    <date>2023-04-20</date>
+  </header>
+  <content>
+    <section id="1">
+      <title>Weird Symbols and Characters</title>
+      <paragraph>
+        Here are some weird symbols and characters:
+        <list>
+          <item>☺</item>
+          <item>✌</item>
+          <item>☠</item>
+          <item>♡</item>
+          <item>۞</item>
+          <item>⚠</item>
+        </list>
+      </paragraph>
+    </section>
+    <section id="2">
+      <title>Unicode Characters</title>
+      <paragraph>
+        Here are some Unicode characters from different scripts:
+        <list>
+          <item>क</item>
+          <item>س</item>
+          <item>ᠮ</item>
+          <item>ע</item>
+          <item>カ</item>
+          <item>힣</item>
+        </list>
+      </paragraph>
+    </section>
+    <section id="3">
+      <title>Special Characters</title>
+      <paragraph>
+        Here are some special characters:
+        <list>
+          <item>©</item>
+          <item>™</item>
+          <item>®</item>
+          <item>∞</item>
+          <item>♫</item>
+          <item>★</item>
+        </list>
+      </paragraph>
+    </section>
+  </content>
+</document>

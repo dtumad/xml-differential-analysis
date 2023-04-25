@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+  <employee>
+    <name>田中太郎 (Tanaka Taro)</name>
+    <id>001</id>
+    <position>エンジニア (Engineer)</position>
+    <salary>¥5000000</salary>
+    <skills>
+      <skill>Java</skill>
+      <skill>C#</skill>
+      <skill>Python</skill>
+      <skill>Ruby</skill>
+      <skill>العربية (Arabic)</skill>
+      <skill>中文 (Chinese)</skill>
+    </skills>
+  </employee>
+  <employee>
+    <name>José Gómez</name>
+    <id>002</id>
+    <position>Desarrollador de Software (Software Developer)</position>
+    <salary>€45000</salary>
+    <skills>
+      <skill>C++</skill>
+      <skill>JavaScript</skill>
+      <skill>PHP</skill>
+      <skill>Perl</skill>
+      <skill>日本語 (Japanese)</skill>
+      <skill>한국어 (Korean)</skill>
+    </skills>
+  </employee>
+  <employee>
+    <name>Василий Петров (Vasily Petrov)</name>
+    <id>003</id>
+    <position>Программист (Programmer)</position>
+    <salary>₽600000</salary>
+    <skills>
+      <skill>C</skill>
+      <skill>Assembly</skill>
+      <skill>Fortran</skill>
+      <skill>Ada</skill>
+      <skill>తెలుగు (Telugu)</skill>
+      <skill>தமிழ் (Tamil)</skill>
+    </skills>
+  </employee>
+  <project>
+    <name>Project Ω</name>
+    <description>Ένα πρότυπο για τη διαχείριση έργων που χρησιμοποιεί τη μεθοδολογία Agile (A template for project management using the Agile methodology)</description>
+    <team>
+      <member>田中太郎 (Tanaka Taro)</member>
+      <member>José Gómez</member>
+      <member>Василий Петров (Vasily Petrov)</member>
+    </team>
+    <status>In progress</status>
+    <deadline>2024-12-31</deadline>
+  </project>
+</database>

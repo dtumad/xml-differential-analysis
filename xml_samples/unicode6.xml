@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<randomData>
+  <person>
+    <name>Ðïlåñ Kümår</name>
+    <age>42</age>
+    <gender>Non-binary</gender>
+    <phone>+81 11-875-3489</phone>
+    <email>åßÇÐïlåñKümår@funkydomain.co.jp</email>
+    <address>
+      <line1>3197 Quam Avenue</line1>
+      <line2>Building #6, Unit 204</line2>
+      <city>Des Moines</city>
+      <state>Iowa</state>
+      <country>United States</country>
+      <zipcode>50309</zipcode>
+    </address>
+    <occupation>Professional Forager</occupation>
+    <favoriteColor>#03A9F4</favoriteColor>
+    <hobbies>
+      <hobby>Unicycling</hobby>
+      <hobby>Collecting vintage board games</hobby>
+      <hobby>Playing the didgeridoo</hobby>
+      <hobby>Knitting sweaters for plants</hobby>
+    </hobbies>
+    <bio><![CDATA[
+      I was born on a pirate ship, raised by wolves, and educated by aliens.
+      In my free time, I like to explore abandoned buildings and search for
+      rare mushrooms. My life goal is to build a treehouse that is also a
+      spaceship.
+    ]]></bio>
+  </person>
+  <person>
+    <name>Єѵгá Vоŗобéй</name>
+    <age>27</age>
+    <gender>Female</gender>
+    <phone>+7 495 647-39-40</phone>
+    <email>ѵоŗобéйЄѵгá@funkydomain.ru</email>
+    <address>
+      <line1>Ул. Чистопрудный бульвар, дом 21, кв. 55</line1>
+      <city>Москва</city>
+      <state>Центральный Федеральный округ</state>
+      <country>Россия</country>
+      <zipcode>101000</zipcode>
+    </address>
+    <occupation>Virtual Reality Designer</occupation>
+    <favoriteColor>#9C27B0</favoriteColor>
+    <hobbies>
+      <hobby>Creating digital art</hobby>
+      <hobby>Playing the balalaika</hobby>
+      <hobby>Baking sourdough bread</hobby>
+      <hobby>Collecting vintage Soviet propaganda posters</hobby>
+    </hobbies>
+    <bio><![CDATA[
+      I grew up in a small village in Siberia, where I learned to code by
+      using a computer made out of sticks and stones. Now, I work for a
+      tech startup that creates virtual reality experiences for cats.
+      In my spare time, I like to explore abandoned nuclear reactors and
+      search for hidden treasure.
+    ]]></bio>
+  </person>
+  <person>
+    <name>अभिषेक जोशी</name>
+    <age>36</age>
+    <gender>Male</gender>
+    <phone>+91 22 555
