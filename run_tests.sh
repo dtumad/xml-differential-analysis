@@ -123,12 +123,14 @@ validate_files() {
 # Loop through all the sample xml files and run the normalizers on them.
 xml_file=""
 for xml_file in ./$xml_samples/*.xml; do
-    run_normalizers "$xml_file"
+    run_normalizers "$xml_file" &
 done
+wait
 
 # Loop through all pairs of normalized files and run the validators on them.
 normalized_xml_directory=""
 add_csv_headers
 for normalized_xml_directory in ./$xml_normalized/*; do
-    validate_files "$normalized_xml_directory"
+    validate_files "$normalized_xml_directory" &
 done
+wait

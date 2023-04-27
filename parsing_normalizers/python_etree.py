@@ -7,4 +7,4 @@ try:
     normalized_xml_text = str(ET.tostring(xml_tree, encoding="unicode"))
     print(normalized_xml_text)
 except:
-    print("<parsing_failure>")
+    print("</parsing_failure>")
