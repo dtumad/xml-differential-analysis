@@ -72,7 +72,8 @@ run_validators() {
         xml_text2=`cat "$3" | tr "\n" " "`
         combined_text="$xml_text1
 $xml_text2"
-        is_valid=`echo "$combined_text" | python3 "$validator_program"`
+        validator_command=`get_command $validator_program`
+        is_valid=`echo "$combined_text" | $validator_command "$validator_program"`
 
         # Grab the specific name of the validator being used and corresponding normalizers.
         validator_name=`extract_name "$validator_program"`
@@ -122,7 +123,7 @@ validate_files() {
 
 # Loop through all the sample xml files and run the normalizers on them.
 xml_file=""
-for xml_file in ./$xml_samples/*.xml; do
+for xml_file in ./$xml_samples/$1/*.xml; do
     run_normalizers "$xml_file" &
 done
 wait
