@@ -1,10 +1,15 @@
-# Parse an XML file with etree library and write it back out right away
-import xml.etree.ElementTree as ET
-xml_text = input() #sys.argv[1]
+# Normalize an XML file using the python `etree.ElementTree` parser.
+import xml.etree.ElementTree as ET, sys
 
-try:
-    xml_tree = ET.fromstring(xml_text)
-    normalized_xml_text = str(ET.tostring(xml_tree, encoding="unicode"))
-    print(normalized_xml_text)
+xml_text = input()
+
+try: xml_tree = ET.fromstring(xml_text)
 except:
-    print("</parsing_failure>")
+    print("<parsing_failure> Failed to parse XML input </parsing_failure>")
+    sys.exit()
+
+try: normalized_xml_text = str(ET.tostring(xml_tree, encoding="unicode"))
+except:
+    print("<parsing_failure> Failed to serialize XML output</parsing_failure>")
+
+print(normalized_xml_text)

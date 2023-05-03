@@ -1,4 +1,4 @@
-# This validator goes through both trees, checking that the number of children and all the node tags match
+# This validator goes through both trees, checking that the number of children and all the node tags match.
 import xml.etree.ElementTree as ET
 import sys
 
@@ -17,22 +17,22 @@ def validate_tree(xml_tree1, xml_tree2):
     children1 = [c for c in xml_tree1]
     children2 = [c for c in xml_tree2]
     # Check that both nodes have the same tag and number of child nodes.
-    if tag1 != tag2: report_invalid("mismatched tags: '{}' and '{}'".format(tag1, tag2))
+    if tag1 != tag2: report_invalid(f"mismatched tags: '{tag1}' and '{tag2}'")
     elif len(children1) != len(children2): report_invalid("different number of children at nodes '{}' and '{}'".format(tag1, tag2))
     # Recursively check the child nodes. Child nodes should be in the same order.
     for i in range(len(children1)):
         validate_tree(children1[i], children2[i])
 
-if "parsing_failure" in xml_text1: report_invalid("First parser being validated returned failure")
-elif "parsing_failure" in xml_text2: report_invalid("Second parser being validated returned failure")
+if "parsing_failure" in xml_text1: report_invalid(f"First parser being validated returned failure -- {xml_text1}")
+elif "parsing_failure" in xml_text2: report_invalid(f"Second parser being validated returned failure -- {xml_text2}")
 
 try: xml_tree1 = ET.fromstring(xml_text1)
-except: report_invalid("Validator failed to parse first of the XML files")
+except Exception as e: report_invalid(f"Validator failed to parse first of the XML files: {str(e)}")
 
 try: xml_tree2 = ET.fromstring(xml_text2)
-except: report_invalid("Validator failed to parse second of the XML files")
+except Exception as e: report_invalid(f"Validator failed to parse second of the XML files: {str(e)}")
 
 try: validate_tree(xml_tree1, xml_tree2)
-except: report_invalid("Validator crashed while traversing parsed tree")
+except Exception as e: report_invalid(f"Validator crashed while traversing parsed tree: {str(e)}")
 
 print("VALID")

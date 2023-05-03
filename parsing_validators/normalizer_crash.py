@@ -1,10 +1,10 @@
-# Non-parsing program that lists every check as successful. Mainly for script testing purposes
+# Validator to check that neither of the parsers being tested returned failure.
 xml_text1 = input()
 xml_text2 = input()
 
 if "parsing_failure" in xml_text1:
-    print("INVALID: First parser being validated returned failure")
+    print(f"INVALID: First parser being validated returned failure -- {xml_text1}")
 elif "parsing_failure" in xml_text2:
-    print("INVALID: Second parser being validated returned failure")
+    print(f"INVALID: Second parser being validated returned failure -- {xml_text2}")
 else:
     print("VALID")
