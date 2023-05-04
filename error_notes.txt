@@ -1,0 +1,11 @@
+Basic files: all pass
+
+Long files: all pass (javascript dom extrememely slow)
+
+Blowup: 
+
+
+XXE attack:
+- python lxml by default just prints the file
+- python etree w/ default settings will fail to find
+- javascript dom by default will leave the entity in the `&xxe` form

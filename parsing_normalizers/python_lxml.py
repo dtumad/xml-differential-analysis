@@ -13,7 +13,7 @@ except Exception as e:
 
 # Write the XML tree back out with lxml library
 try: normalized_xml_text = etree.tostring(xml_tree, encoding="utf-8").decode("utf-8")
-except:
+except Exception as e:
     print(f"<parsing_failure> Failed to serialize XML output: {str(e)} </parsing_failure>")
     sys.exit()
 
