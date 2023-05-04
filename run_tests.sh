@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: This currently only works with python program, need some general approach for others.
+file_type="xml" # Changing to e.g. `json` would allow for testing other types of parsers
 
 xml_samples="xml_samples" # Directory with xml files to test.
 
@@ -54,7 +54,7 @@ run_normalizers() {
 
         # Write the normalized text to a new file in `$xml_normalized`
         normalizer_name=`extract_name "$normalizer_program"`
-        normalized_file="./$xml_normalized/$xml_name/$normalizer_name.xml"
+        normalized_file="./$xml_normalized/$xml_name/$normalizer_name.$file_type"
         echo "Outputting normalized file to: '$normalized_file'"
         echo "$normalized_xml" > "$normalized_file"
         echo ""
@@ -88,7 +88,7 @@ $xml_text2"
 
         # Write the output of validation as an entry in the aggregated csv file.
         validated_csv="./$validation_results/$validator_name.csv"
-        echo "$1.xml,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validated_csv"
+        echo "$1.$file_type,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validated_csv"
     done
 }
 
@@ -113,8 +113,8 @@ validate_files() {
 
     echo "Running validators on normalized files in '$1'"
     echo ""
-    for normalized_file1 in $1/*.xml; do
-        for normalized_file2 in $1/*.xml; do
+    for normalized_file1 in $1/*.$file_type; do
+        for normalized_file2 in $1/*.$file_type; do
             run_validators "$directory_name" "$normalized_file1" "$normalized_file2"
         done
     done
@@ -123,7 +123,7 @@ validate_files() {
 
 # Loop through all the sample xml files and run the normalizers on them.
 xml_file=""
-for xml_file in ./$xml_samples/$1/*.xml; do
+for xml_file in $1/*.$file_type; do
     run_normalizers "$xml_file" &
 done
 wait
@@ -131,7 +131,7 @@ wait
 # Loop through all pairs of normalized files and run the validators on them.
 normalized_xml_directory=""
 add_csv_headers
-for normalized_xml_directory in ./$xml_normalized/*; do
+for normalized_xml_directory in ./$xml_normalized/*.$file_type; do
     validate_files "$normalized_xml_directory" &
 done
 wait

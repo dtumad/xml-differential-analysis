@@ -2,10 +2,27 @@ Basic files: all pass
 
 Long files: all pass (javascript dom extrememely slow)
 
-Blowup: 
+Billion Laughs:
+- python lxml reports reference looping by default
+- python etree reports expansion bound being breached by default
+- javascript dom doesn't expand the entity after noticing, but doesn't error out
 
+Quadratic Blowup:
+- python lxml reports reference looping by default
+- python etree reports expansion bound being breached by default
+- javascript dom doesn't expand the entity after noticing, but doesn't error out
+
+Unicode:
+- python lxml requires a lot of configuration up front (however it gives explicit errors to the user of this fact)
+- python etree works (but writes out as bytes without configuration, feels like a potential attack here maybe?) 
+- javascript dom works with no changes at all
+
+XML version and encoding tag:
+- python lxml does not preserve by default
+- python etree does not preserve by default
+- javacript dom handles automatically
 
 XXE attack:
-- python lxml by default just prints the file
-- python etree w/ default settings will fail to find
+- python lxml by default just prints the file, if file not found just omits without error
+- python etree w/ default settings will report file not found as it doesn't allow without explicit enable
 - javascript dom by default will leave the entity in the `&xxe` form
