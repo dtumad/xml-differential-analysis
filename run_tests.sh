@@ -1,7 +1,5 @@
 #!/bin/bash
 
-file_type="xml" # Changing to e.g. `json` would allow for testing other types of parsers
-
 xml_samples="xml_samples" # Directory with xml files to test.
 
 normalizers="parsing_normalizers" # Directory of programs to run the sample xml files through.
@@ -24,17 +22,19 @@ extract_name() {
     echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"
 }
 
-# Get the command to run given the extension
-get_command() {
+compiled_java="./$normalizers/ParsingNormalizer" # Assume java will be compiled to this class
+# Run the given normalizer program on the given XML text
+run_normalizer() {
+    normalized_xml=""
     extension=`echo "$1" | sed -r "s/.*\/.*\.(.*)/\1/"`
     if [[ $extension == "py" ]]
-    then
-        echo "python3"
+    then normalized_xml=`echo "$2" | python3 $1`
     elif [[ $extension == "js" ]]
-    then
-        echo "node"
+    then normalized_xml=`echo "$2" | node $1`
+    elif [[ $extension == "java" ]]
+    then normalized_xml=`javac $1 && (echo "$2" | java $compiled_java) && rm $compiled_java.class`
     fi
-    # echo "python3"
+    echo "$normalized_xml"
 }
 
 # Run all normalizers in `$normalizers` on the file passed in as argument `$1`.
@@ -49,12 +49,11 @@ run_normalizers() {
         # Get the result of normalizing the input file with the current normalizer.
         echo "Normalizing '$1' with '$normalizer_program'"
         xml_text=`cat "$1" | tr "\n" " "`
-        normalizer_command=`get_command $normalizer_program`
-        normalized_xml=`echo "$xml_text" | $normalizer_command "$normalizer_program"`
+        normalized_xml=`run_normalizer $normalizer_program "$xml_text"`
 
         # Write the normalized text to a new file in `$xml_normalized`
         normalizer_name=`extract_name "$normalizer_program"`
-        normalized_file="./$xml_normalized/$xml_name/$normalizer_name.$file_type"
+        normalized_file="./$xml_normalized/$xml_name/$normalizer_name.xml"
         echo "Outputting normalized file to: '$normalized_file'"
         echo "$normalized_xml" > "$normalized_file"
         echo ""
@@ -72,7 +71,7 @@ run_validators() {
         xml_text2=`cat "$3" | tr "\n" " "`
         combined_text="$xml_text1
 $xml_text2"
-        validator_command=`get_command $validator_program`
+        validator_command="python3" # TODO fix this
         is_valid=`echo "$combined_text" | $validator_command "$validator_program"`
 
         # Grab the specific name of the validator being used and corresponding normalizers.
@@ -81,14 +80,14 @@ $xml_text2"
         normalizer_name2=`extract_name "$3"`
 
         # Write the output of validation to a new file in `$xml_validated`.
-        validated_file="./$xml_validated/$1/$validator_name-$normalizer_name1-$normalizer_name2"
+        validated_file="./$xml_validated/$1/$validator_name-$normalizer_name1-$normalizer_name2.txt"
         echo "Outputting validation results to: '$validated_file'"
         echo ""
         echo "$is_valid" > "$validated_file"
 
         # Write the output of validation as an entry in the aggregated csv file.
         validated_csv="./$validation_results/$validator_name.csv"
-        echo "$1.$file_type,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validated_csv"
+        echo "$1.xml,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validated_csv"
     done
 }
 
@@ -113,8 +112,8 @@ validate_files() {
 
     echo "Running validators on normalized files in '$1'"
     echo ""
-    for normalized_file1 in $1/*.$file_type; do
-        for normalized_file2 in $1/*.$file_type; do
+    for normalized_file1 in $1/*.xml; do
+        for normalized_file2 in $1/*.xml; do
             run_validators "$directory_name" "$normalized_file1" "$normalized_file2"
         done
     done
@@ -123,7 +122,7 @@ validate_files() {
 
 # Loop through all the sample xml files and run the normalizers on them.
 xml_file=""
-for xml_file in $1/*.$file_type; do
+for xml_file in $1/*; do
     run_normalizers "$xml_file" &
 done
 wait
@@ -131,7 +130,7 @@ wait
 # Loop through all pairs of normalized files and run the validators on them.
 normalized_xml_directory=""
 add_csv_headers
-for normalized_xml_directory in ./$xml_normalized/*.$file_type; do
+for normalized_xml_directory in ./$xml_normalized/*; do
     validate_files "$normalized_xml_directory" &
 done
 wait
