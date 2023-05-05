@@ -26,7 +26,7 @@ class java_dom {
             transformer.transform(dom, new StreamResult(System.out));
         }
         catch (Exception e) {
-            System.out.println("<parsing_failure> TODO </parsing_failure>");
+            System.out.println("<parsing_failure> " + e.toString() + " </parsing_failure>");
         }
 
     }

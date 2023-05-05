@@ -12,7 +12,7 @@ process.stdin.on('end', () => {
         locator: {},
         errorHandler: { warning: function (w) { },
         error: function (e) { }, // Hide minor error outputs to not clutter command line.
-        fatalError: function (e) { console.error("<parsing_error> " + e + "</parsing_error>") } }
+        fatalError: function (e) { console.error("<parsing_error> " + e + " </parsing_error>") } }
     });
     var xml_tree = parser.parseFromString(buffer, 'text/xml');
 

@@ -1,53 +1,86 @@
 #!/bin/bash
 
-xml_samples="xml_samples" # Directory with xml files to test.
+xml_samples=${1:-'xml_samples/basic'} # Default directory to look for xml sample files
 
 normalizers="parsing_normalizers" # Directory of programs to run the sample xml files through.
 xml_normalized="xml_normalized" # Directory to output normalized xml files.
 
 validators="parsing_validators" # Directory of programs to test if two normalized files match.
 xml_validated="xml_validated" # Directory to output results of validation.
-validation_results="validation_results" # CSV to collect validation results
+validation_results="validation_results" # CSV to collect validation results.
 
-# Clear previous results of running normalizers and validators.
-rm -r "$xml_normalized" 2> /dev/null
-rm -r "$xml_validated" 2> /dev/null
-rm -r "$validation_results" 2> /dev/null
-mkdir "$xml_normalized"
-mkdir "$xml_validated"
-mkdir "$validation_results"
+###################################################################
+####################### UTILITY FUNCTIONS #########################
+###################################################################
 
-# Get the name of a file, removing the leading path and trailing file extension
+# Reset the folders for the validation results and intermediate files.
+make_output_dirs() {
+    rm -r "$xml_normalized" 2> /dev/null
+    rm -r "$xml_validated" 2> /dev/null
+    rm -r "$validation_results" 2> /dev/null
+    mkdir "$xml_normalized"
+    mkdir "$xml_validated"
+    mkdir "$validation_results"
+}
+
+# Get the name of a file, removing the leading path and trailing file extension.
 extract_name() {
     echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"
 }
 
-# Loop through and compile re-compile programs for languages like java
+extract_extension() {
+    echo "$1" | sed -r "s/.*\/.*\.(.*)/\1/"
+}
+
+# Remove compiled parser files
+clean_build() {
+    for class_file in $normalizers/*.class; do
+        rm "$class_file" 2> /dev/null
+    done
+    # for class_file in $validators/*.class; do
+    #     rm "$class_file" 2> /dev/null
+    # done
+}
+
+# Loop through and compile re-compile programs for languages like java.
 run_compilers() {
     cd "$normalizers"
     for java_file in ./*.java; do
         javac "$java_file"
     done
-    cd "../$validators"
-    for java_file in ./*.java; do
-        javac "$java_file"
-    done
+    # cd "../$validators"
+    # for java_file in ./*.java; do
+    #     javac "$java_file"
+    # done
     cd ".."
 }
 
-# Run the given normalizer program on the given XML text
-run_normalizer() {
-    normalized_xml=""
-    extension=`echo "$1" | sed -r "s/.*\/.*\.(.*)/\1/"`
-    program_name=`echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"`
+# Add header rows to each of the eventual csv files to be generated.
+add_csv_headers() {
+    for validator_program in ./$validators/*; do
+        validator_name=`extract_name "$validator_program"`
+        validated_csv="./$validation_results/$validator_name.csv"
+        echo "Original XML Sample,First Parser,Second Parser,Validation Results" > "$validated_csv"
+    done
+}
+
+###################################################################
+################### MAIN ANALYSIS FUNCTIONS #######################
+###################################################################
+
+# Run the given normalizer program on the given XML text.
+call_parser() {
+    result=""
+    extension=`extract_extension "$1"`
+    program_name=`extract_name "$1"`
     if [[ $extension == "py" ]] # Run with python3 interpreter
-    then normalized_xml=`echo "$2" | python3 $1`
+    then result=`echo "$2" | python3 $1`
     elif [[ $extension == "js" ]] # Run with node interpreter
-    then normalized_xml=`echo "$2" | node $1`
+    then result=`echo "$2" | node $1`
     elif [[ $extension == "java" ]] # Run compiled java file
-    then cd "./$normalizers" && normalized_xml=`echo "$2" | java $program_name` && cd ..
+    then cd "./$3" && result=`echo "$2" | java $program_name` && cd ..
     fi
-    echo "$normalized_xml"
+    echo "$result"
 }
 
 # Run all normalizers in `$normalizers` on the file passed in as argument `$1`.
@@ -60,16 +93,16 @@ run_normalizers() {
     normalizer_program=""
     for normalizer_program in ./$normalizers/*; do
         # Get the result of normalizing the input file with the current normalizer.
-        echo "Normalizing '$1' with '$normalizer_program'"
+        echo "Normalizing '$xml_name' with '$normalizer_program'"
         xml_text=`cat "$1" | tr "\n" " "`
-        normalized_xml=`run_normalizer $normalizer_program "$xml_text"`
+        normalized_xml=`call_parser $normalizer_program "$xml_text" $normalizers`
 
-        # Write the normalized text to a new file in `$xml_normalized`
+        # Write the normalized text to a new file in `$xml_normalized`.
         normalizer_name=`extract_name "$normalizer_program"`
         normalized_file="./$xml_normalized/$xml_name/$normalizer_name.xml"
-        echo "Outputting normalized file to: '$normalized_file'"
+        # echo "Outputting normalized file to: '$normalized_file'"
+        # echo ""
         echo "$normalized_xml" > "$normalized_file"
-        echo ""
     done
 }
 
@@ -78,37 +111,30 @@ run_normalizers() {
 run_validators() {
     validator_program=""
     for validator_program in ./$validators/*; do
-        # Store the result of validating the files with `$validator_program` in `$is_valid`.
-        echo "Validating $2 and $3 with $validator_program"
-        xml_text1=`cat "$2" | tr "\n" " "`
-        xml_text2=`cat "$3" | tr "\n" " "`
-        combined_text="$xml_text1
-$xml_text2"
-        validator_command="python3" # TODO fix this
-        is_valid=`echo "$combined_text" | $validator_command "$validator_program"`
-
         # Grab the specific name of the validator being used and corresponding normalizers.
         validator_name=`extract_name "$validator_program"`
         normalizer_name1=`extract_name "$2"`
         normalizer_name2=`extract_name "$3"`
 
+        # Store the result of validating the files with `$validator_program` in `$is_valid`.
+        echo "Validating $2 and $3 with $validator_name"
+        xml_text1=`cat "$2" | tr "\n" " "`
+        xml_text2=`cat "$3" | tr "\n" " "`
+        combined_text="$xml_text1
+$xml_text2"
+        is_valid=`call_parser $validator_program "$combined_text" $validators`
+
+
+
         # Write the output of validation to a new file in `$xml_validated`.
         validated_file="./$xml_validated/$1/$validator_name-$normalizer_name1-$normalizer_name2.txt"
-        echo "Outputting validation results to: '$validated_file'"
-        echo ""
+        # echo "Outputting validation results to: '$validated_file'"
+        # echo ""
         echo "$is_valid" > "$validated_file"
 
         # Write the output of validation as an entry in the aggregated csv file.
         validated_csv="./$validation_results/$validator_name.csv"
         echo "$1.xml,$normalizer_name1,$normalizer_name2,$is_valid" >> "$validated_csv"
-    done
-}
-
-add_csv_headers() {
-    for validator_program in ./$validators/*; do
-        validator_name=`extract_name "$validator_program"`
-        validated_csv="./$validation_results/$validator_name.csv"
-        echo "Original XML Sample,First Parser,Second Parser,Validation Results" > "$validated_csv"
     done
 }
 
@@ -120,33 +146,36 @@ validate_files() {
     normalized_file1="" # Normalized file to validate.
     normalized_file2="" # Normalized file to validate against.
 
-    # Create folder for the validation results on this set of files, and add csv headers
+    # Create folder for the validation results on this set of files, and add csv headers.
     mkdir "./$xml_validated/$directory_name"
 
-    echo "Running validators on normalized files in '$1'"
-    echo ""
     for normalized_file1 in $1/*.xml; do
         for normalized_file2 in $1/*.xml; do
             run_validators "$directory_name" "$normalized_file1" "$normalized_file2"
         done
     done
-    echo ""
 }
 
-# Pre-compile parser files for languages like java
+###################################################################
+########################## MAIN RUNNER ############################
+###################################################################
+
+make_output_dirs
+clean_build
 run_compilers
+add_csv_headers
 
 # Loop through all the sample xml files and run the normalizers on them.
-xml_file=""
-for xml_file in $1/*; do
+for xml_file in ./$xml_samples/*; do
     run_normalizers "$xml_file" &
 done
 wait
 
 # Loop through all pairs of normalized files and run the validators on them.
-normalized_xml_directory=""
-add_csv_headers
 for normalized_xml_directory in ./$xml_normalized/*; do
     validate_files "$normalized_xml_directory" &
 done
 wait
+
+clean_build
+exit 0

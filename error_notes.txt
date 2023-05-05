@@ -6,23 +6,28 @@ Billion Laughs:
 - python lxml reports reference looping by default
 - python etree reports expansion bound being breached by default
 - javascript dom doesn't expand the entity after noticing, but doesn't error out
+- java dom is protected by default, reports error
 
 Quadratic Blowup:
 - python lxml reports reference looping by default
 - python etree reports expansion bound being breached by default
 - javascript dom doesn't expand the entity after noticing, but doesn't error out
+- java dom is protected by default, reports error
 
 Unicode:
 - python lxml requires a lot of configuration up front (however it gives explicit errors to the user of this fact)
-- python etree works (but writes out as bytes without configuration, feels like a potential attack here maybe?) 
-- javascript dom works with no changes at all
+- python etree works (but will write out as bytes unless configured, feels like a potential attack here maybe?)
+- javascript dom works with no changes at all.
+- java dom works with no changes at all.
 
 XML version and encoding tag:
 - python lxml does not preserve by default
 - python etree does not preserve by default
 - javacript dom handles automatically
+- java dom adds it automatically even if not already there
 
 XXE attack:
-- python lxml by default just prints the file, if file not found just omits without error
-- python etree w/ default settings will report file not found as it doesn't allow without explicit enable
-- javascript dom by default will leave the entity in the `&xxe` form
+- python lxml by default vulnerable: just prints the file, if file not found just omits without error.
+- python etree w/ default settings will report file not found as it doesn't allow without explicit enable.
+- javascript dom by default will leave the entity in the `&xxe` form.
+- java dom by default vulnerable: just prints the file, if not found does give an error.
