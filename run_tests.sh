@@ -80,7 +80,7 @@ call_parser() {
     elif [[ $extension == "java" ]] # Run compiled java file
     then cd "./$3" && result=`echo "$2" | java $program_name` && cd ..
     elif [[ $extension == "rs" ]] # Run the compiled rust file
-    then cd "./$3" && result=`echo "$2" | $program_name.rso` && cd ..
+    then cd "./$3" && result=`echo "$2" | `./$program_name.rso`` && cd ..
     fi
     echo "$result"
 }
@@ -102,8 +102,6 @@ run_normalizers() {
         # Write the normalized text to a new file in `$xml_normalized`.
         normalizer_name=`extract_name "$normalizer_program"`
         normalized_file="./$xml_normalized/$xml_name/$normalizer_name.xml"
-        # echo "Outputting normalized file to: '$normalized_file'"
-        # echo ""
         echo "$normalized_xml" > "$normalized_file"
     done
 }
@@ -126,12 +124,8 @@ run_validators() {
 $xml_text2"
         is_valid=`call_parser $validator_program "$combined_text" $validators`
 
-
-
         # Write the output of validation to a new file in `$xml_validated`.
         validated_file="./$xml_validated/$1/$validator_name-$normalizer_name1-$normalizer_name2.txt"
-        # echo "Outputting validation results to: '$validated_file'"
-        # echo ""
         echo "$is_valid" > "$validated_file"
 
         # Write the output of validation as an entry in the aggregated csv file.

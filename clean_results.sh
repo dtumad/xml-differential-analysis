@@ -21,5 +21,11 @@ done
 for class_file in $validators/*.class; do
     rm "$class_file" 2> /dev/null
 done
+for rustc_file in $normalizers/*.rso; do
+        rm "$rustc_file" 2> /dev/null
+done
+for rustc_file in $validators/*.rso; do
+        rm "$rustc_file" 2> /dev/null
+done
 
 exit 0
