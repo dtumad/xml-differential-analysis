@@ -22,17 +22,18 @@ extract_name() {
     echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"
 }
 
-compiled_java="./$normalizers/ParsingNormalizer" # Assume java will be compiled to this class
 # Run the given normalizer program on the given XML text
 run_normalizer() {
     normalized_xml=""
     extension=`echo "$1" | sed -r "s/.*\/.*\.(.*)/\1/"`
-    if [[ $extension == "py" ]]
+    program_name=`echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"`
+    if [[ $extension == "py" ]] # Run with python3 interpreter
     then normalized_xml=`echo "$2" | python3 $1`
-    elif [[ $extension == "js" ]]
+    elif [[ $extension == "js" ]] # Run with node interpreter
     then normalized_xml=`echo "$2" | node $1`
-    elif [[ $extension == "java" ]]
-    then normalized_xml=`javac $1 && (echo "$2" | java $compiled_java) && rm $compiled_java.class`
+    elif [[ $extension == "java" ]] # Move into the directory, compile with javac, run with java
+    then normalized_xml=`javac $1 && cd ./$normalizers &&
+        (echo "$2" | java $program_name) && rm $program_name.class && cd ..`
     fi
     echo "$normalized_xml"
 }
