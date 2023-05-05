@@ -3,7 +3,11 @@ import java.util.Scanner;
 
 class forwarding {
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-	    System.out.println(s.next());
+        StringBuilder sb = new StringBuilder();
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            sb.append(scanner.nextLine()).append(System.lineSeparator());
+        }
+        System.out.println(sb);
     }
 }

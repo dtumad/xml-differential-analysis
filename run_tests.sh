@@ -22,6 +22,19 @@ extract_name() {
     echo "$1" | sed -r "s/.*\/(.*)\..*/\1/"
 }
 
+# Loop through and compile re-compile programs for languages like java
+run_compilers() {
+    cd "$normalizers"
+    for java_file in ./*.java; do
+        javac "$java_file"
+    done
+    cd "../$validators"
+    for java_file in ./*.java; do
+        javac "$java_file"
+    done
+    cd ".."
+}
+
 # Run the given normalizer program on the given XML text
 run_normalizer() {
     normalized_xml=""
@@ -31,9 +44,8 @@ run_normalizer() {
     then normalized_xml=`echo "$2" | python3 $1`
     elif [[ $extension == "js" ]] # Run with node interpreter
     then normalized_xml=`echo "$2" | node $1`
-    elif [[ $extension == "java" ]] # Move into the directory, compile with javac, run with java
-    then normalized_xml=`javac $1 && cd ./$normalizers &&
-        (echo "$2" | java $program_name) && rm $program_name.class && cd ..`
+    elif [[ $extension == "java" ]] # Run compiled java file
+    then cd "./$normalizers" && normalized_xml=`echo "$2" | java $program_name` && cd ..
     fi
     echo "$normalized_xml"
 }
@@ -120,6 +132,9 @@ validate_files() {
     done
     echo ""
 }
+
+# Pre-compile parser files for languages like java
+run_compilers
 
 # Loop through all the sample xml files and run the normalizers on them.
 xml_file=""
