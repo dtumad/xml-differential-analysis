@@ -37,9 +37,9 @@ clean_build() {
     for class_file in $normalizers/*.class; do
         rm "$class_file" 2> /dev/null
     done
-    # for class_file in $validators/*.class; do
-    #     rm "$class_file" 2> /dev/null
-    # done
+    for rustc_file in $normalizers/*.rso; do
+        rm "$rustc_file" 2> /dev/null
+    done
 }
 
 # Loop through and compile re-compile programs for languages like java.
@@ -48,10 +48,10 @@ run_compilers() {
     for java_file in ./*.java; do
         javac "$java_file"
     done
-    # cd "../$validators"
-    # for java_file in ./*.java; do
-    #     javac "$java_file"
-    # done
+    for rust_file in ./*.rs; do
+        file_name=`extract_name "$rust_file"`
+        rustc "$rust_file" -o "$file_name.rso"
+    done
     cd ".."
 }
 
@@ -79,6 +79,8 @@ call_parser() {
     then result=`echo "$2" | node $1`
     elif [[ $extension == "java" ]] # Run compiled java file
     then cd "./$3" && result=`echo "$2" | java $program_name` && cd ..
+    elif [[ $extension == "rs" ]] # Run the compiled rust file
+    then cd "./$3" && result=`echo "$2" | $program_name.rso` && cd ..
     fi
     echo "$result"
 }
